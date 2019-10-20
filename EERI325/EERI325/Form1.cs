@@ -113,6 +113,11 @@ namespace EERI325
         private void btnDFT_Click(object sender, EventArgs e)
         {
             string image = "cat.jpg";
+
+            Bitmap grey = new Bitmap(image);
+            Bitmap kitty = new Bitmap(image);
+
+           
         }
     }
 }
