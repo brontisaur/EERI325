@@ -47,6 +47,7 @@
             this.GRAY = new System.Windows.Forms.PictureBox();
             this.originalIMG2 = new System.Windows.Forms.PictureBox();
             this.DFT = new System.Windows.Forms.TabPage();
+            this.baseFourier = new System.Windows.Forms.PictureBox();
             this.phase = new System.Windows.Forms.PictureBox();
             this.magnitude = new System.Windows.Forms.PictureBox();
             this.originalIMG3 = new System.Windows.Forms.PictureBox();
@@ -54,11 +55,14 @@
             this.inverse = new System.Windows.Forms.PictureBox();
             this.originalIMG4 = new System.Windows.Forms.PictureBox();
             this.Highpass = new System.Windows.Forms.TabPage();
+            this.FilteredMagnitude = new System.Windows.Forms.PictureBox();
+            this.OriginalMagnitude = new System.Windows.Forms.PictureBox();
             this.Filtered = new System.Windows.Forms.PictureBox();
             this.originalIMG5 = new System.Windows.Forms.PictureBox();
             this.Pencil = new System.Windows.Forms.TabPage();
             this.PencilSketch = new System.Windows.Forms.PictureBox();
             this.originalIMG6 = new System.Windows.Forms.PictureBox();
+            this.phaseSketch = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.OriginalImage.SuspendLayout();
@@ -72,6 +76,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GRAY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG2)).BeginInit();
             this.DFT.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.baseFourier)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.phase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.magnitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG3)).BeginInit();
@@ -79,11 +84,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.inverse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG4)).BeginInit();
             this.Highpass.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FilteredMagnitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginalMagnitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Filtered)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG5)).BeginInit();
             this.Pencil.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PencilSketch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.phaseSketch)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -107,6 +115,7 @@
             this.btnPencil.TabIndex = 5;
             this.btnPencil.Text = "Pencil";
             this.btnPencil.UseVisualStyleBackColor = true;
+            this.btnPencil.Click += new System.EventHandler(this.btnPencil_Click);
             // 
             // btnHighpass
             // 
@@ -116,6 +125,7 @@
             this.btnHighpass.TabIndex = 4;
             this.btnHighpass.Text = "Highpass";
             this.btnHighpass.UseVisualStyleBackColor = true;
+            this.btnHighpass.Click += new System.EventHandler(this.btnHighpass_Click);
             // 
             // btnIDFT
             // 
@@ -125,6 +135,7 @@
             this.btnIDFT.TabIndex = 3;
             this.btnIDFT.Text = "IDFT";
             this.btnIDFT.UseVisualStyleBackColor = true;
+            this.btnIDFT.Click += new System.EventHandler(this.btnIDFT_Click);
             // 
             // btnDFT
             // 
@@ -265,6 +276,7 @@
             // 
             // DFT
             // 
+            this.DFT.Controls.Add(this.baseFourier);
             this.DFT.Controls.Add(this.phase);
             this.DFT.Controls.Add(this.magnitude);
             this.DFT.Controls.Add(this.originalIMG3);
@@ -275,9 +287,17 @@
             this.DFT.Text = "DFT";
             this.DFT.UseVisualStyleBackColor = true;
             // 
+            // baseFourier
+            // 
+            this.baseFourier.Location = new System.Drawing.Point(359, 260);
+            this.baseFourier.Name = "baseFourier";
+            this.baseFourier.Size = new System.Drawing.Size(282, 184);
+            this.baseFourier.TabIndex = 3;
+            this.baseFourier.TabStop = false;
+            // 
             // phase
             // 
-            this.phase.Location = new System.Drawing.Point(193, 260);
+            this.phase.Location = new System.Drawing.Point(22, 260);
             this.phase.Name = "phase";
             this.phase.Size = new System.Drawing.Size(282, 184);
             this.phase.TabIndex = 2;
@@ -328,6 +348,8 @@
             // 
             // Highpass
             // 
+            this.Highpass.Controls.Add(this.FilteredMagnitude);
+            this.Highpass.Controls.Add(this.OriginalMagnitude);
             this.Highpass.Controls.Add(this.Filtered);
             this.Highpass.Controls.Add(this.originalIMG5);
             this.Highpass.Location = new System.Drawing.Point(4, 22);
@@ -337,24 +359,41 @@
             this.Highpass.Text = "Highpass";
             this.Highpass.UseVisualStyleBackColor = true;
             // 
+            // FilteredMagnitude
+            // 
+            this.FilteredMagnitude.Location = new System.Drawing.Point(351, 259);
+            this.FilteredMagnitude.Name = "FilteredMagnitude";
+            this.FilteredMagnitude.Size = new System.Drawing.Size(274, 190);
+            this.FilteredMagnitude.TabIndex = 3;
+            this.FilteredMagnitude.TabStop = false;
+            // 
+            // OriginalMagnitude
+            // 
+            this.OriginalMagnitude.Location = new System.Drawing.Point(20, 259);
+            this.OriginalMagnitude.Name = "OriginalMagnitude";
+            this.OriginalMagnitude.Size = new System.Drawing.Size(274, 190);
+            this.OriginalMagnitude.TabIndex = 2;
+            this.OriginalMagnitude.TabStop = false;
+            // 
             // Filtered
             // 
-            this.Filtered.Location = new System.Drawing.Point(361, 112);
+            this.Filtered.Location = new System.Drawing.Point(351, 36);
             this.Filtered.Name = "Filtered";
-            this.Filtered.Size = new System.Drawing.Size(283, 190);
+            this.Filtered.Size = new System.Drawing.Size(279, 190);
             this.Filtered.TabIndex = 1;
             this.Filtered.TabStop = false;
             // 
             // originalIMG5
             // 
-            this.originalIMG5.Location = new System.Drawing.Point(29, 112);
+            this.originalIMG5.Location = new System.Drawing.Point(20, 36);
             this.originalIMG5.Name = "originalIMG5";
-            this.originalIMG5.Size = new System.Drawing.Size(283, 190);
+            this.originalIMG5.Size = new System.Drawing.Size(274, 190);
             this.originalIMG5.TabIndex = 0;
             this.originalIMG5.TabStop = false;
             // 
             // Pencil
             // 
+            this.Pencil.Controls.Add(this.phaseSketch);
             this.Pencil.Controls.Add(this.PencilSketch);
             this.Pencil.Controls.Add(this.originalIMG6);
             this.Pencil.Location = new System.Drawing.Point(4, 22);
@@ -366,7 +405,7 @@
             // 
             // PencilSketch
             // 
-            this.PencilSketch.Location = new System.Drawing.Point(368, 104);
+            this.PencilSketch.Location = new System.Drawing.Point(368, 68);
             this.PencilSketch.Name = "PencilSketch";
             this.PencilSketch.Size = new System.Drawing.Size(278, 185);
             this.PencilSketch.TabIndex = 1;
@@ -374,11 +413,19 @@
             // 
             // originalIMG6
             // 
-            this.originalIMG6.Location = new System.Drawing.Point(33, 104);
+            this.originalIMG6.Location = new System.Drawing.Point(37, 68);
             this.originalIMG6.Name = "originalIMG6";
             this.originalIMG6.Size = new System.Drawing.Size(271, 185);
             this.originalIMG6.TabIndex = 0;
             this.originalIMG6.TabStop = false;
+            // 
+            // phaseSketch
+            // 
+            this.phaseSketch.Location = new System.Drawing.Point(368, 280);
+            this.phaseSketch.Name = "phaseSketch";
+            this.phaseSketch.Size = new System.Drawing.Size(278, 185);
+            this.phaseSketch.TabIndex = 2;
+            this.phaseSketch.TabStop = false;
             // 
             // Form1
             // 
@@ -403,6 +450,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GRAY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG2)).EndInit();
             this.DFT.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.baseFourier)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.phase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.magnitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG3)).EndInit();
@@ -410,11 +458,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.inverse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG4)).EndInit();
             this.Highpass.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.FilteredMagnitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.OriginalMagnitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Filtered)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG5)).EndInit();
             this.Pencil.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PencilSketch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.originalIMG6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.phaseSketch)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -452,6 +503,10 @@
         private System.Windows.Forms.Button btnHighpass;
         private System.Windows.Forms.Button btnIDFT;
         private System.Windows.Forms.Button btnDFT;
+        private System.Windows.Forms.PictureBox baseFourier;
+        private System.Windows.Forms.PictureBox FilteredMagnitude;
+        private System.Windows.Forms.PictureBox OriginalMagnitude;
+        private System.Windows.Forms.PictureBox phaseSketch;
     }
 }
 

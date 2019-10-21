@@ -21,17 +21,14 @@ namespace EERI325
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string image = "cat.jpg";
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
 
-            if (!System.IO.File.Exists(image))
-                MessageBox.Show("Oops");
-            else
-            {
                 Image cat = Image.FromFile(image);
 
-                Bitmap bmp = new Bitmap(cat);
-                originalIMG.Image = cat;
-            }
+            //Bitmap bmp = new Bitmap(new Bitmap(cat), new Size(256,128));
+            Bitmap bmp = new Bitmap(new Bitmap(cat), new Size(128, 256));
+            originalIMG.Image = bmp;
 
              
         }
@@ -39,22 +36,27 @@ namespace EERI325
         private void btnRGB_Click(object sender, EventArgs e)
         {
 
-            string image = "cat.jpg";
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
 
             Image cat = Image.FromFile(image);
 
-            originalIMG1.Image = cat;
+            
+            //Bitmap bmap = new Bitmap(new Bitmap(cat),new Size(256,128));
+            Bitmap bmap = new Bitmap(new Bitmap(cat), new Size(128, 256));
 
-            int height = cat.Height;
-            int width = cat.Width;
+            Bitmap red = new Bitmap(bmap);
+            Bitmap green = new Bitmap(bmap);
+            Bitmap blue = new Bitmap(bmap);
 
-            Bitmap red = new Bitmap(cat);
-            Bitmap green = new Bitmap(cat);
-            Bitmap blue = new Bitmap(cat);
+            originalIMG1.Image = bmap;
 
-            Bitmap bmap = new Bitmap(cat);
+            int height = bmap.Height;
+            int width = bmap.Width;
 
-           for (int y = 0; y<height; y++)
+
+
+            for (int y = 0; y<height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
@@ -80,15 +82,18 @@ namespace EERI325
 
         private void btnGrayscale_Click(object sender, EventArgs e)
         {
-            string image = "cat.jpg";
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
 
             Image cat = Image.FromFile(image);
 
-            Bitmap grey = new Bitmap(cat);
-            Bitmap kitty = new Bitmap(cat);
+            //Bitmap grey = new Bitmap(new Bitmap(cat),new Size(256,128));
+            Bitmap grey = new Bitmap(new Bitmap(cat), new Size(128, 256));
+            //Bitmap kitty = new Bitmap(new Bitmap(cat), new Size(256,128));
+            Bitmap kitty = new Bitmap(new Bitmap(cat), new Size(128, 256));
 
-            int width = cat.Width;
-            int height = cat.Height;
+            int width = kitty.Width;
+            int height = kitty.Height;
 
             for (int y = 0; y < height; y++)
             {
@@ -107,17 +112,259 @@ namespace EERI325
                     
                 }
             }
+
+            originalIMG2.Image = kitty;
+            GRAY.Image = grey;
 ;
         }
 
         private void btnDFT_Click(object sender, EventArgs e)
         {
-            string image = "cat.jpg";
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
 
-            Bitmap grey = new Bitmap(image);
-            Bitmap kitty = new Bitmap(image);
+            //Bitmap kitty = new Bitmap(new Bitmap(image), new Size(256, 128));
+            Bitmap kitty = new Bitmap(new Bitmap(image), new Size(128, 256));
 
-           
+            Bitmap grey = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(kitty);
+
+            originalIMG3.Image = grey;
+
+            AForge.Imaging.ComplexImage baseComplex = AForge.Imaging.ComplexImage.FromBitmap(grey);
+            baseComplex.ForwardFourierTransform();
+            Bitmap BaseFourier = baseComplex.ToBitmap();
+
+            int width = kitty.Width;
+            int height = kitty.Height;
+
+            double Real = 0;
+            double Imag = 0;
+            double mag = 0;
+            double ph = 0;
+
+
+            //Bitmap phaseComp = new Bitmap(new Bitmap(kitty), new Size(256, 128));
+            Bitmap phaseComp = new Bitmap(new Bitmap(kitty), new Size(128, 256));
+            //Bitmap magComp = new Bitmap(new Bitmap(kitty), new Size(256, 128));
+            Bitmap magComp = new Bitmap(new Bitmap(kitty), new Size(128, 256));
+
+
+            int scaleconst = 100000;
+            int phaseconst = 100;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Real = baseComplex.Data[y, x].Re;
+                    Imag = baseComplex.Data[y, x].Im;
+
+                    mag = Math.Sqrt(Real * Real + Imag * Imag);
+                    ph = Math.Atan2(Imag, Real);
+
+                    int phasecol = (int)Math.Abs(Math.Log(1 + ph) * phaseconst);
+
+                    int color = (int)Math.Abs((Math.Log10(1 + mag) * scaleconst));
+                    if (color > 255)
+                    {
+                        color = 255;
+                    }
+                    if (phasecol > 255)
+                    {
+                        phasecol = 255;
+                    }
+                    if (phasecol < 0)
+                    {
+                        phasecol = 0;
+                    }
+                    magComp.SetPixel(x, y, Color.FromArgb(255, color, color, color));
+                    phaseComp.SetPixel(x,y, Color.FromArgb(255, phasecol, phasecol, phasecol));
+                }
+            }
+
+            magnitude.Image = magComp;
+            phase.Image = phaseComp;
+            baseFourier.Image = BaseFourier;
+        }
+
+        private void btnIDFT_Click(object sender, EventArgs e)
+        {
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
+            //Bitmap kitty = new Bitmap(new Bitmap(image), new Size(256, 128));
+            Bitmap kitty = new Bitmap(new Bitmap(image), new Size(128, 256));
+            Bitmap grey = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(kitty);
+
+            AForge.Imaging.ComplexImage baseComplex = AForge.Imaging.ComplexImage.FromBitmap(grey);
+            baseComplex.ForwardFourierTransform();
+            baseComplex.BackwardFourierTransform();
+            Bitmap InverseFourier = baseComplex.ToBitmap();
+
+            originalIMG4.Image = grey;
+            inverse.Image = InverseFourier;
+
+        }
+
+        private void btnHighpass_Click(object sender, EventArgs e)
+        {
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
+            //Bitmap kitty = new Bitmap(new Bitmap(image), new Size(256, 128));
+            Bitmap kitty = new Bitmap(new Bitmap(image), new Size(128, 256));
+            Bitmap grey = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(kitty);
+
+            AForge.Imaging.ComplexImage baseComplex = AForge.Imaging.ComplexImage.FromBitmap(grey);
+            baseComplex.ForwardFourierTransform();
+
+            double Real = 0;
+            double Imag = 0;
+            double mag = 0;
+            int scaleconst = 100000;
+
+            Bitmap MagnitudeOriginal = baseComplex.ToBitmap();
+            Bitmap MagnitudeFiltered = new Bitmap(grey);
+
+            int height = grey.Height;
+            int width = grey.Width;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Real = baseComplex.Data[y, x].Re;
+                    Imag = baseComplex.Data[y, x].Im;
+
+                    mag = Math.Sqrt(Real * Real + Imag * Imag);
+                    int color = (int)Math.Abs((Math.Log10(1 + mag) * scaleconst));
+                    if (color > 255)
+                    {
+                        color = 255;
+                    }
+                   MagnitudeFiltered.SetPixel(x, y, Color.FromArgb(255, color, color, color));
+                }
+            }
+
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color Pixel = MagnitudeFiltered.GetPixel(x, y); //check to see mechanism of Fourier transform and magnitudes of lower frequencies
+                    if (Pixel.B > 128)
+                    {
+                        MagnitudeFiltered.SetPixel(x, y, Color.FromArgb(255, 0, 0, 0));
+                        baseComplex.Data[y, x].Im = 0;
+                        baseComplex.Data[y, x].Re = 0;
+
+                    }
+                }
+            }
+
+            baseComplex.BackwardFourierTransform();
+            Bitmap InverseFourierFiltered = baseComplex.ToBitmap();
+
+            originalIMG5.Image = grey;
+            Filtered.Image = InverseFourierFiltered;
+            OriginalMagnitude.Image = MagnitudeOriginal;
+            FilteredMagnitude.Image = MagnitudeFiltered;
+
+        }
+
+        private void btnPencil_Click(object sender, EventArgs e)
+        {
+            //string image = "cat.jpg";
+            string image = "benny.jpg";
+            //Bitmap kitty = new Bitmap(new Bitmap(image), new Size(256, 128));
+            Bitmap kitty = new Bitmap(new Bitmap(image), new Size(128, 256));
+            Bitmap grey = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(kitty);
+
+            AForge.Imaging.ComplexImage baseComplex = AForge.Imaging.ComplexImage.FromBitmap(grey);
+            baseComplex.ForwardFourierTransform();
+
+            double Real = 0;
+            double Imag = 0;
+            double mag = 0;
+            int scaleconst = 100000;
+
+            Bitmap MagnitudeOriginal = baseComplex.ToBitmap();
+            Bitmap MagnitudeFiltered = new Bitmap(grey);
+
+            int height = grey.Height;
+            int width = grey.Width;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Real = baseComplex.Data[y, x].Re;
+                    Imag = baseComplex.Data[y, x].Im;
+
+
+                    mag = Math.Sqrt(Real * Real + Imag * Imag);
+                    int color = (int)Math.Abs((Math.Log10(1 + mag) * scaleconst));
+                    if (color > 255)
+                    {
+                        color = 255;
+                    }
+
+
+                    MagnitudeFiltered.SetPixel(x, y, Color.FromArgb(255, color, color, color));
+                }
+
+            }
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Color Pixel = MagnitudeFiltered.GetPixel(x, y); 
+                    if (Pixel.B > 250)
+                    {
+                        MagnitudeFiltered.SetPixel(x, y, Color.FromArgb(255, 0, 0, 0));
+                        baseComplex.Data[y, x].Im = 0;
+                        baseComplex.Data[y, x].Re = 0;
+
+                    }
+                }
+            }
+
+            baseComplex.BackwardFourierTransform();
+            Bitmap InverseFourierFiltered = baseComplex.ToBitmap();
+            Bitmap grey2 = new Bitmap(InverseFourierFiltered);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x< width; x++)
+                {
+             
+                    Color Pixel2 = grey2.GetPixel(x, y);
+
+                    int Red1 = 255;
+                    int Red2 = Pixel2.R;
+
+                    int sketch = Math.Abs(Red2 - Red1);
+
+                    if (sketch > 220)
+                    {
+                        sketch = 255;
+                    }
+                    if (sketch < 220)
+                    {
+                        sketch = 150*(sketch/230);
+                    }
+                    
+
+                    grey2.SetPixel(x, y, Color.FromArgb(255, sketch, sketch, sketch));
+
+                }
+            }
+
+
+
+            originalIMG6.Image = grey;
+            PencilSketch.Image = grey2;
+
+
         }
     }
 }

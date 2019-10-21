@@ -90,6 +90,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="benny.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="cat.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

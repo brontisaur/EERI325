@@ -15,3 +15,4 @@ C:\Users\chara\Source\Repos\EERI325\EERI325\obj\Debug\EERI325.csproj.GenerateRes
 C:\Users\chara\Source\Repos\EERI325\EERI325\obj\Debug\EERI325.csproj.CopyComplete
 C:\Users\chara\Source\Repos\EERI325\EERI325\obj\Debug\EERI325.exe
 C:\Users\chara\Source\Repos\EERI325\EERI325\obj\Debug\EERI325.pdb
+C:\Users\chara\Source\Repos\EERI325\EERI325\bin\Debug\benny.jpg
